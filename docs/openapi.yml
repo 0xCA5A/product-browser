@@ -1,0 +1,144 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Software Products API
+  description: An API to access software product information
+
+paths:
+  /products:
+    get:
+      description: Returns a list of software products
+      operationId: getProducts
+      responses:
+        '200':
+          description: Successfully returned a list of software products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          links:
+            self:
+              operationId: 'getProducts'
+              parameters:
+                id: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `id` parameter in `GET /products/{id}`.
+            products.environments:
+              operationRef: '#/paths/products/{id}/environments'
+              parameters:
+                id: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `id` parameter in `GET /products/{id}/environments`.
+        '408':
+          $ref: '#/components/responses/408Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+
+  /products/{id}:
+    get:
+      description: Returns a specific product
+      operationId: getProduct
+      responses:
+        '200':
+          description: Successfully returned a product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /products/{id}/environments:
+    get:
+      description: Obtain information about a products environments from its unique id
+      operationId: getEnvironments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Successfully returned a list of environments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Environment'
+
+        '408':
+          $ref: '#/components/responses/408Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example:
+
+    Environment:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        git_hash:
+          type: string
+
+  parameters:
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+
+    PageOffset:
+      name: offset
+      in: query
+      description: Specifies the page number of the artists to be displayed
+      schema:
+        type: integer
+
+  responses:
+    408Error:
+      description: Request Timeout
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    500Error:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
