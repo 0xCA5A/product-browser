@@ -1,0 +1,36 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/spring/boot/actuator/info",
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache"
+    },
+    "jsonBody": {
+      "git": {
+        "branch": "main",
+        "commit": {
+          "id": "f57b777",
+          "time": "2025-01-31T02:20:03Z"
+        }
+      },
+      "build": {
+        "artifact": "application",
+        "name": "project",
+        "time": "2025-01-31T02:41:32.130Z",
+        "version": "0.0.1",
+        "group": "group"
+      }
+    }
+  }
+}
+
