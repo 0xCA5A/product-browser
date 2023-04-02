@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 flask = "*"
 flask-marshmallow = "*"
+flask-restful-hal = "*"
 
 [dev-packages]
 
