@@ -25,11 +25,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>{{ product?.name }}</h1>
-
   <div v-for="env in environments">
-  <pre>{{ JSON.stringify(env) }}</pre>
-  
+    <h2>Name: {{ env.name }}</h2>
+    <ul class="list-group">
+      <li class="list-group-item">ID: {{ env.id }}</li>
+      <li class="list-group-item">Status: {{ env.status }}</li>
+    </ul>  
   </div>
 </template>
 

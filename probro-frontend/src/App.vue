@@ -2,6 +2,7 @@
 import ProductList from "./components/ProductList.vue";
 import { DefaultApi, Product } from "../build/generated/openapi/index";
 import { defineComponent } from "vue";
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
 export default defineComponent({
   components: {
@@ -23,11 +24,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>ProBro</h1>
+  <div class="container">
+    <h1>ProBro</h1>
   <div v-for="product in products">
-    <pre>{{JSON.stringify(product)}}</pre>
+    <h1>{{ product.name }}</h1>
     <ProductList :product="product" ></ProductList>
   </div>
+  </div>
+  
 </template>
 
 <style scoped>
