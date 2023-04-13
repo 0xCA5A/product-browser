@@ -1,7 +1,9 @@
+test:
+	curl -X GET http://localhost:5000/todos?links=true -H "Content-Type:application/hal+json; charset=utf-8" -v  -d "{}"
 run:
 	pipenv run python3.10 app.py
 run_hal:
-	pipenv run python3.10 app_hal.py
+	./bootstrap.sh
 docker_build:
 	docker build -t productmonitor .
 docker_run:
