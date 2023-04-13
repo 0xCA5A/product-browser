@@ -4,11 +4,14 @@ info:
   title: Software Products API
   description: An API to access software product information
 
+servers:
+  - url: http://localhost:5000/api
+    description: Local development server
+
 paths:
-  /products:
+  /api/products:
     get:
       description: Returns a list of software products
-      operationId: getProducts
       responses:
         '200':
           description: Successfully returned a list of software products
@@ -20,14 +23,14 @@ paths:
                   $ref: '#/components/schemas/Product'
           links:
             self:
-              operationId: 'getProducts'
+              operationRef: '#/paths/~1products~1{id}/get'
               parameters:
                 id: '$response.body#/id'
               description: >
                 The `id` value returned in the response can be used as
                 the `id` parameter in `GET /products/{id}`.
             products.environments:
-              operationRef: '#/paths/products/{id}/environments'
+              operationRef: '#/paths/~1products~1{id}environments/get'
               parameters:
                 id: '$response.body#/id'
               description: >
@@ -38,10 +41,12 @@ paths:
         '500':
           $ref: '#/components/responses/500Error'
 
-  /products/{id}:
+  /api/products/{id}:
     get:
       description: Returns a specific product
       operationId: getProduct
+      parameters:
+        - $ref: '#/components/parameters/Id'
       responses:
         '200':
           description: Successfully returned a product
@@ -49,16 +54,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-  /products/{id}/environments:
+  /api/products/{id}/environments:
     get:
       description: Obtain information about a products environments from its unique id
       operationId: getEnvironments
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/Id'
 
       responses:
         '200':
@@ -76,10 +77,6 @@ paths:
           $ref: '#/components/responses/500Error'
 
 components:
-  securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
 
   schemas:
     Product:
@@ -93,35 +90,36 @@ components:
           format: uuid
         name:
           type: string
-          example:
+          example: The product display name
 
     Environment:
       type: object
       required:
         - id
         - name
+        - status
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
-        version:
+          example: The environment display name
+        status:
           type: string
-        git_hash:
-          type: string
+          enum:
+            - UP
+            - DOWN
 
   parameters:
-    PageLimit:
-      name: limit
-      in: query
+    Id:
+      name: id
+      in: path
+      required: true
       description: Limits the number of items on a page
       schema:
-        type: integer
-
-    PageOffset:
-      name: offset
-      in: query
-      description: Specifies the page number of the artists to be displayed
-      schema:
-        type: integer
+        type: string
+        format: uuid
 
   responses:
     408Error:
