@@ -1,12 +1,13 @@
 <script lang="ts">
-import ProductList from "./components/ProductList.vue";
-import { DefaultApi, Product } from "../build/generated/openapi/index";
-import { defineComponent } from "vue";
+import ProductDetails from "./components/ProductDetails.vue";
+import {DefaultApi, Product} from "../build/generated/openapi/index";
+import {defineComponent} from "vue";
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
 export default defineComponent({
+  name: "App",
   components: {
-    ProductList
+    ProductDetails
   },
   data() {
     const api = new DefaultApi();
@@ -24,14 +25,17 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-lg">
     <h1>ProBro</h1>
-  <div v-for="product in products">
-    <h1>{{ product.name }}</h1>
-    <ProductList :product="product" ></ProductList>
+    <pre>The product browser</pre>
+    <div v-for="product in products" style="background-color:lightblue;" class="row padding">
+      <h2>Product Name: {{ product.name }}</h2>
+      <pre>Product Id: {{ product.id }}</pre>
+
+      <ProductDetails :product="product"></ProductDetails>
+    </div>
   </div>
-  </div>
-  
+
 </template>
 
 <style scoped>
@@ -41,10 +45,19 @@ export default defineComponent({
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style>
+
+<style scoped>
+.padding {
+  margin: 10px;
+  padding: 10px;
 }
 </style>
