@@ -3,7 +3,7 @@
 pkgs.mkShell {
 
   buildInputs = with pkgs; [
-    python310Packages.pip
+    python313Packages.pip
     pipenv
 
     nodejs

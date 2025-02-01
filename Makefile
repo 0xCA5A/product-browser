@@ -1,5 +1,5 @@
 run:
-	pipenv run python3.10 probro/app.py
+	pipenv run python3.13 probro/app.py
 run_hal:
 	./bootstrap.sh
 docker_build:
